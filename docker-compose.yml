@@ -9,8 +9,8 @@ services:
     networks:
       - openamtnetwork
     build:
-      context: ./sample-web-ui
-      dockerfile: ./Dockerfile
+      context: .
+      dockerfile: ./sample-web-ui/Dockerfile
     environment:
       RPS_SERVER: https://${MPS_COMMON_NAME}/rps
       MPS_SERVER: https://${MPS_COMMON_NAME}/mps
@@ -63,7 +63,7 @@ services:
     volumes:
       - private-volume:/mps-microservice/private
   mpsrouter:
-    image: mpsrouter:latest
+    image: deviantony/intelopenamt-mpsrouter:latest
     environment:
       MPS_CONNECTION_STRING: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/mpsdb?sslmode=disable
       PORT: ${PORT}
@@ -79,10 +79,10 @@ services:
     networks:
       - openamtnetwork
   db:
-    image: sslpostgres
+    image: deviantony/intelopenamt-sslpostgres:latest
     build:
-      context: ./pg
-      dockerfile: ./Dockerfile
+      context: .
+      dockerfile: ./pg/Dockerfile
     command: -c ssl=on -c ssl_cert_file=/var/lib/postgresql/server.crt -c ssl_key_file=/var/lib/postgresql/server.key
     networks:
       - openamtnetwork
